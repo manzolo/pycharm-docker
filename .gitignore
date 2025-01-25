@@ -1,0 +1,8 @@
+mount/.cache/*
+!mount/.cache/.gitkeep
+mount/.config/*
+!mount/.config/.gitkeep
+mount/.ssh/*
+!mount/.ssh/.gitkeep
+mount/PycharmProjects/*
+!mount/PycharmProjects/.gitkeep
