@@ -12,6 +12,9 @@ RUN userdel -r ubuntu
 # Crea un utente non root
 ARG PUID=1000
 ARG PGID=1000
+ENV PUID=${PUID}
+ENV PGID=${PGID}
+
 RUN groupadd -g $PGID ${CONTAINER_USERNAME} && \
     useradd -m -u $PUID -g $PGID -s /bin/bash ${CONTAINER_USERNAME}
    
@@ -21,6 +24,8 @@ COPY . ${workspace}
 WORKDIR ${workspace}
 RUN chmod +x ${workspace}/installer.sh
 RUN ${workspace}/installer.sh
+
+
 
 # Cambia contesto all'utente non root
 USER ${CONTAINER_USERNAME}
