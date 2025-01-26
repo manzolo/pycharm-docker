@@ -53,6 +53,11 @@ logs:
 	@echo "Container logs"
 	docker compose logs -f
 
+# Target per la pull dell'immagine
+pull:
+	@echo "image pull"
+	docker pull ${REGISTRY_BASE_URL}/${IMAGE_OWNER}/${IMAGE_NAME}:${IMAGE_TAG}
+
 # Target per la build dell'immagine
 enter:
 	@echo "Consentire connessioni X11 locali"
