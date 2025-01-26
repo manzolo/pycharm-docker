@@ -11,7 +11,7 @@ start:
 	@echo "Consentire connessioni X11 locali"
 	@xhost +SI:localuser:$(shell id -un)
 	@echo "Riavvio i container Docker Compose"
-	docker compose up --remove-orphans
+	docker compose run --remove-orphans ${CONTAINER_NAME}
 
 # Target per fermare i container
 stop:
@@ -22,8 +22,16 @@ stop:
 # Target per la build dell'immagine
 build:
 	@echo "Build dell'immagine"
-	docker build -t ${REGISTRY_BASE_URL}/${IMAGE_OWNER}/${IMAGE_NAME}:${IMAGE_TAG} .
+ifeq ($(DEBUG),true)
+	@echo "Modalità DEBUG attiva: build in plain text abilitato"
+	docker build --progress=plain --build-arg CONTAINER_USERNAME=${CONTAINER_USERNAME} \
+		-t ${REGISTRY_BASE_URL}/${IMAGE_OWNER}/${IMAGE_NAME}:${IMAGE_TAG} .
+else
+	docker build --build-arg CONTAINER_USERNAME=${CONTAINER_USERNAME} \
+		-t ${REGISTRY_BASE_URL}/${IMAGE_OWNER}/${IMAGE_NAME}:${IMAGE_TAG} .
+endif
 	@echo "Immagine costruita: ${REGISTRY_BASE_URL}/${IMAGE_OWNER}/${IMAGE_NAME}:${IMAGE_TAG}"
+
 
 #registry_tag:
 #	docker tag ${IMAGE_NAME} ${REGISTRY_BASE_URL}/${IMAGE_OWNER}/${IMAGE_NAME}:${IMAGE_TAG}
@@ -41,5 +49,5 @@ enter:
 	@echo "Consentire connessioni X11 locali"
 	@xhost +SI:localuser:$(shell id -un)
 	@echo "Enter Container"
-	docker compose up
+	docker compose run --remove-orphans ${CONTAINER_NAME} /bin/bash
 

@@ -6,3 +6,7 @@ mount/.ssh/*
 !mount/.ssh/.gitkeep
 mount/PycharmProjects/*
 !mount/PycharmProjects/.gitkeep
+mount/.local/*
+!mount/.local/.gitkeep
+mount/.java/*
+!mount/.java/.gitkeep

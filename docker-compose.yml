@@ -4,11 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: pycharm
-    #runtime: nvidia
+    image: ${REGISTRY_BASE_URL}/${IMAGE_OWNER}/${IMAGE_NAME}:${IMAGE_TAG}
     network_mode: host
-    #stdin_open: true        # Permette l'interazione con la shell
-    #tty: true               # Mantiene la sessione aperta
-    #command: ["/bin/bash"]
     environment:
       - DISPLAY
       - WAYLAND_DISPLAY
@@ -19,27 +16,23 @@ services:
       - PGID=${GID:-1000}
       - QT_QPA_PLATFORM=xcb
     devices:
-      #- /dev/dri:/dev/dri
-      #- /dev/kvm:/dev/kvm
       - /dev/snd:/dev/snd
       - /dev/nvidia0:/dev/nvidia0
       - /dev/nvidiactl:/dev/nvidiactl
       - /dev/nvidia-modeset:/dev/nvidia-modeset
     volumes:
-      #- /dev/kvm:/dev/kvm
-      - /run/user/${UID:-1000}/${WAYLAND_DISPLAY}:/run/user/${UID:-1000}/${WAYLAND_DISPLAY}:ro
-      - /run/user/${UID:-1000}/pulse:/run/user/${UID:-1000}/pulse:rw
-      - /run/user/${UID:-1000}/avd/running:/run/user/${UID:-1000}/avd/running:rw
-      #- $PWD/mount/Android:/home/manzolo/Android
-      #- $PWD/mount/.android:/home/manzolo/.android
-      #- $PWD/mount/.AndroidStudio:/home/manzolo/.AndroidStudio
-      - $PWD/mount/PycharmProjects:/home/manzolo/PycharmProjects
-      - $PWD/mount/.config/JetBrains:/home/manzolo/.config/JetBrains
-      - $PWD/mount/.cache:/home/manzolo/.cache
-      - $PWD/mount/.ssh:/home/manzolo/.ssh
-
+      - /run/user/${PUID:-1000}/${WAYLAND_DISPLAY}:/run/user/${PUID:-1000}/${WAYLAND_DISPLAY}:ro
+      - /run/user/${PUID:-1000}/pulse:/run/user/${PUID:-1000}/pulse:rw
       - /etc/machine-id:/etc/machine-id:ro
       - /etc/localtime:/etc/localtime:ro
+
+      - ./mount/PycharmProjects:/home/${CONTAINER_USERNAME}/PycharmProjects
+      - ./mount/.config/JetBrains:/home/${CONTAINER_USERNAME}/.config/JetBrains
+      - ./mount/.cache:/home/${CONTAINER_USERNAME}/.cache
+      - ./mount/.ssh:/home/${CONTAINER_USERNAME}/.ssh
+      - ./mount/.local/share/JetBrains:/home/${CONTAINER_USERNAME}/.local/share/JetBrains
+      - ./mount/.java/.userPrefs/jetbrains:/home/${CONTAINER_USERNAME}/.java/.userPrefs/jetbrains
+
     shm_size: 2g
     security_opt:
       - seccomp=unconfined
