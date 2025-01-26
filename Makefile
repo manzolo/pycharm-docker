@@ -58,5 +58,5 @@ enter:
 	@echo "Consentire connessioni X11 locali"
 	@xhost +SI:localuser:$(shell id -un)
 	@echo "Enter Container"
-	docker compose run --remove-orphans ${CONTAINER_NAME} /bin/bash
+	docker compose run --remove-orphans --entrypoint /bin/bash ${CONTAINER_NAME} 
 

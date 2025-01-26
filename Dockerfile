@@ -26,6 +26,9 @@ RUN chmod +x ${workspace}/installer.sh
 RUN ${workspace}/installer.sh
 
 
+# Copia lo script di avvio
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Cambia contesto all'utente non root
 USER ${CONTAINER_USERNAME}
@@ -34,5 +37,6 @@ WORKDIR /home/${CONTAINER_USERNAME}
 # Imposta PATH
 ENV PATH="/opt/pycharm-community/bin:$PATH"
 
-# Comando di avvio
-CMD ["pycharm"]
+# Usa lo script di avvio come punto di ingresso
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
