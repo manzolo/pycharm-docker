@@ -25,6 +25,7 @@ build:
 ifeq ($(DEBUG),true)
 	@echo "Modalità DEBUG attiva: build in plain text abilitato"
 	docker build --progress=plain --build-arg CONTAINER_USERNAME=${CONTAINER_USERNAME} \
+		--build-arg PYCHARM_VERSION=${PYCHARM_VERSION} \
 		-t ${REGISTRY_BASE_URL}/${IMAGE_OWNER}/${IMAGE_NAME}:${IMAGE_TAG} .
 else
 	docker build --build-arg CONTAINER_USERNAME=${CONTAINER_USERNAME} \

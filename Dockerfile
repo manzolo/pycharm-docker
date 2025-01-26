@@ -4,6 +4,9 @@ FROM ubuntu:24.04
 ARG CONTAINER_USERNAME=utente
 ENV CONTAINER_USERNAME=${CONTAINER_USERNAME}
 
+ARG PYCHARM_VERSION=2024.3.1.1
+ENV PYCHARM_VERSION=${PYCHARM_VERSION}
+
 RUN userdel -r ubuntu
 
 # Crea un utente non root
@@ -24,7 +27,7 @@ USER ${CONTAINER_USERNAME}
 WORKDIR /home/${CONTAINER_USERNAME}
 
 # Imposta PATH
-ENV PATH="/opt/pycharm-community-2024.3.1.1/bin:$PATH"
+ENV PATH="/opt/pycharm-community/bin:$PATH"
 
 # Comando di avvio
 CMD ["pycharm"]
